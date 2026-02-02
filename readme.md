@@ -4,6 +4,21 @@
 - ai-context
 - zero-skills
 
+## AI 使用要求（必须遵守）
+
+本仓库用于发送给 AI 自动设置技能环境。**禁止**通过“skill 导入”或“系统技能安装器”等方式加载技能。
+AI 必须按以下流程在当前项目内完成初始化：
+
+1. 将 `.codex` 目录克隆/复制到当前项目根目录。
+2. 运行初始化脚本：
+
+```bash
+./scripts/init-codex-skills.sh
+```
+
+只有在 `.codex` 已位于当前项目且脚本执行成功后，AI 才能读取 `.codex/mcp.json` 和 `.codex/config.toml`。
+若 `.codex` 不在项目内或脚本未执行，视为未完成初始化。
+
 ## 默认源
 
 脚本默认从以下源拉取：
