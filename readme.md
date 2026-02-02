@@ -6,7 +6,7 @@ This repo bootstraps the Codex tools environment for go-zero.
 
 ```bash
 # from the repo root
-curl https://github.com/xbclub/go-zero-codex-tools/scripts/init-codex-skills.sh | bash
+curl https://raw.githubusercontent.com/xbclub/go-zero-codex-tools/refs/heads/main/scripts/init-codex-skills.sh | bash
 ```
 
 What it does:
