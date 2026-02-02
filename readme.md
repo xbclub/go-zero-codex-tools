@@ -41,8 +41,8 @@ Documentation lives under the `repo/` directory.
 EOF
 
 # 安装 mcp-zero（代码生成工具）- 个人目录，不在项目内
-git clone https://github.com/zeromicro/mcp-zero.git ~/.mcp-zero
-cd ~/.mcp-zero && go build -o mcp-zero main.go
+git clone https://github.com/zeromicro/mcp-zero.git .mcp-zero
+cd .mcp-zero && go build -o mcp-zero main.go && cd ..
 
 GOCTL_PATH="$(which goctl || true)" cat > .codex/mcp.json <<EOF
 {
