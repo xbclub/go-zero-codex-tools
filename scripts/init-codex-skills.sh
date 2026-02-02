@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -L)"
 AI_CONTEXT_DIR="$ROOT_DIR/.codex/skills/ai-context/repo"
 ZERO_SKILLS_DIR="$ROOT_DIR/.codex/skills/zero-skills/repo"
 CODEX_DIR="$ROOT_DIR/.codex"
@@ -12,6 +12,34 @@ MCP_ZERO_DIR="$ROOT_DIR/.mcp-zero"
 AI_CONTEXT_URL="${AI_CONTEXT_URL:-https://github.com/zeromicro/ai-context.git}"
 ZERO_SKILLS_URL="${ZERO_SKILLS_URL:-https://github.com/zeromicro/zero-skills.git}"
 MCP_ZERO_URL="https://github.com/zeromicro/mcp-zero.git"
+CODEX_SOURCE_REPO="${CODEX_SOURCE_REPO:-https://github.com/xbclub/go-zero-codex-skill.git}"
+
+sync_codex_dir() {
+  local repo="$1"
+  local dest="$2"
+  local tmp_dir
+
+  tmp_dir="$(mktemp -d)"
+  echo "Fetching latest .codex from $repo"
+  git clone --depth 1 "$repo" "$tmp_dir"
+
+  if [ ! -d "$tmp_dir/.codex" ]; then
+    echo "No .codex directory found in $repo."
+    rm -rf "$tmp_dir"
+    exit 1
+  fi
+
+  if command -v rsync >/dev/null 2>&1; then
+    mkdir -p "$dest"
+    rsync -a --delete "$tmp_dir/.codex/" "$dest/"
+  else
+    rm -rf "$dest"
+    mkdir -p "$dest"
+    cp -a "$tmp_dir/.codex/." "$dest/"
+  fi
+
+  rm -rf "$tmp_dir"
+}
 
 clone_or_update() {
   local url="$1"
@@ -33,6 +61,10 @@ clone_or_update() {
   echo "Cloning $url into $dir"
   git clone "$url" "$dir"
 }
+
+if [ "${SKIP_CODEX_SYNC:-}" != "1" ]; then
+  sync_codex_dir "$CODEX_SOURCE_REPO" "$CODEX_DIR"
+fi
 
 clone_or_update "$AI_CONTEXT_URL" "$AI_CONTEXT_DIR"
 clone_or_update "$ZERO_SKILLS_URL" "$ZERO_SKILLS_DIR"
