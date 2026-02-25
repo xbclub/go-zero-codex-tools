@@ -36,6 +36,35 @@ git clone --depth 1 https://github.com/xbclub/gorm-zero-skills.git <skills-dir>/
 
 如果目录已存在则跳过。
 
+### 为 ai-context 创建 SKILL.md
+
+ai-context 仓库本身没有 SKILL.md，需要在 `<skills-dir>/ai-context/` 目录下创建：
+
+```markdown
+---
+name: gozero-ai-context
+description: go-zero 工作流指令与决策规则
+---
+
+## 文件优先级
+
+1. `00-instructions.md` - AI 指令（必读）
+2. `workflows.md` - 工作流模式
+3. `tools.md` - MCP 工具使用
+4. `patterns.md` - 代码模式
+
+## 核心规则
+
+- Spec-First：先创建 `.api` 规范再生成代码
+- 使用 mcp-zero 工具，而非手动生成
+- 生成完整实现，而非空桩
+- 为新服务生成 README.md 文档
+
+## 详细模式
+
+查阅 zero-skills 获取完整实现模式。
+```
+
 ## 验证
 
 初始化完成后，目录结构应为：
